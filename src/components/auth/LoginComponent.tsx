@@ -25,8 +25,8 @@ import userStore from "@/store/user.store";
 // 1. 定义表单验证规则（Zod Schema）
 // 登录表单规则
 const loginSchema = z.object({
-  email: z.string().email({ message: "请输入有效的邮箱地址" }),
-  password: z.string().min(6, { message: "密码至少6位" }),
+  email: z.email({ message: "请输入有效的邮箱地址" }),
+  password: z.string(),
 });
 
 // 注册表单规则
@@ -85,7 +85,6 @@ export default function LoginRegisterForm() {
       const user = await request.post<UserVO>("/api/user/login", values);
       if (user) {
         setUser(user);
-        toast.success("登录成功");
         router.push("/");
       }
     } catch (e) {
@@ -96,7 +95,7 @@ export default function LoginRegisterForm() {
   const onRegisterSubmit = async (values: RegisterFormValues) => {
     try {
       await request.post<UserVO>("/api/user/register", values);
-      toast.success("注册成功，请登录");
+      toast.success("注册成功");
       setActiveTab("login");
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "注册失败，请重试");

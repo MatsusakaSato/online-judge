@@ -2,12 +2,12 @@
 "use client";
 
 import { Search, Code2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar } from "@/components/ui/avatar";
-
+import userStore from "@/store/user.store";
 
 export default function Header() {
+  const user = userStore((state) => state.user);
   return (
     <div className="h-full px-4 flex items-center justify-between">
       <div className="flex items-center gap-3">
@@ -32,7 +32,7 @@ export default function Header() {
         </Avatar>
         {/* 用户名文本：大屏显示，小屏隐藏，防止占空间 */}
         <span className="text-base font-medium hidden md:inline-block">
-          admin
+          {user?.username ?? "未登录"}
         </span>
       </div>
     </div>

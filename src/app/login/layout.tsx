@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "../globals.css"; // 核心：导入全局样式（必加）
 import { cn } from "@/lib/utils";
-import { Toaster } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 // 复用根layout的字体配置（保证字体样式一致）
 const geistSans = localFont({
