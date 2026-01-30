@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "../globals.css"; // 核心：导入全局样式（必加）
 import { cn } from "@/lib/utils";
+import { Toaster } from "sonner";
 
 // 复用根layout的字体配置（保证字体样式一致）
 const geistSans = localFont({
@@ -36,6 +37,7 @@ export default function LoginLayout({
         )}
       >
         {children} {/* 这里只渲染登录组件，无侧边栏/导航栏 */}
+        <Toaster position="top-center" richColors closeButton />
       </body>
     </html>
   );

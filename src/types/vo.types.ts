@@ -1,6 +1,8 @@
 export type Role = "user" | "admin";
-export interface UserVO {
-  username: string;
-  role: Role;
-  token?: string;
-}
+import { z } from "zod";
+export const $UserVO = z.object({
+  username: z.string(),
+  role: z.enum(["user", "admin"]),
+  token: z.string().optional(),
+});
+export type UserVO = z.infer<typeof $UserVO>;

@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +18,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
+import { request } from "@/common/Request";
+import { UserVO } from "@/types/vo.types";
+import userStore from "@/store/user.store";
 
 // 1. 定义表单验证规则（Zod Schema）
 // 登录表单规则
@@ -27,7 +32,7 @@ const loginSchema = z.object({
 // 注册表单规则
 const registerSchema = z
   .object({
-    email: z.string().email({ message: "请输入有效的邮箱地址" }),
+    email: z.email({ message: "请输入有效的邮箱地址" }),
     username: z
       .string()
       .min(3, { message: "用户名至少3位" })
@@ -45,7 +50,11 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export default function LoginRegisterForm() {
-  // 2. 状态管理：密码显隐（登录+注册各一个）
+  const router = useRouter();
+  const setUser = userStore((s) => s.setUser);
+
+  // 2. 状态管理：密码显隐（登录+注册各一个）+ 当前 Tab（注册成功后切到登录）
+  const [activeTab, setActiveTab] = useState<string>("login");
   const [showLoginPwd, setShowLoginPwd] = useState(false);
   const [showRegisterPwd, setShowRegisterPwd] = useState(false);
   const [showRegisterConfirmPwd, setShowRegisterConfirmPwd] = useState(false);
@@ -70,20 +79,33 @@ export default function LoginRegisterForm() {
     },
   });
 
-  // 5. 表单提交处理（示例：仅打印数据，实际项目替换为API请求）
-  const onLoginSubmit = (values: LoginFormValues) => {
-    console.log("登录提交：", values);
-    // 实际逻辑：调用登录API → 存储token → 跳转首页
+  // 5. 表单提交处理
+  const onLoginSubmit = async (values: LoginFormValues) => {
+    try {
+      const user = await request.post<UserVO>("/api/user/login", values);
+      if (user) {
+        setUser(user);
+        toast.success("登录成功");
+        router.push("/");
+      }
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "登录失败，请重试");
+    }
   };
 
-  const onRegisterSubmit = (values: RegisterFormValues) => {
-    console.log("注册提交：", values);
-    // 实际逻辑：调用注册API → 提示注册成功 → 切换到登录标签
+  const onRegisterSubmit = async (values: RegisterFormValues) => {
+    try {
+      await request.post<UserVO>("/api/user/register", values);
+      toast.success("注册成功，请登录");
+      setActiveTab("login");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "注册失败，请重试");
+    }
   };
 
   return (
     <div className="w-full max-w-sm mx-auto mt-8 p-6 bg-card rounded-lg shadow-md">
-      <Tabs defaultValue="login" className="w-full">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         {/* 登录/注册标签切换 */}
         <TabsList className="grid w-full grid-cols-2 mb-6">
           <TabsTrigger value="login">登录</TabsTrigger>
@@ -112,6 +134,7 @@ export default function LoginRegisterForm() {
                           type="email"
                           className="pl-8"
                           {...field}
+                          id="login-email"
                         />
                       </div>
                     </FormControl>

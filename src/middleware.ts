@@ -12,10 +12,10 @@ export function middleware(request: NextRequest) {
   const requestPath = request.nextUrl.pathname;
   const user: UserVO | null = userStore.getState().user;
   // 匹配规则：当访问 /login 路径时，执行重定向
-  if (requestPath === "/login") {
-    // 重定向到根路径 / ，使用307临时重定向（推荐，保留请求方法/体）
-    return NextResponse.redirect(new URL("/", request.url));
-  }
+  // if (requestPath === "/login") {
+  //   // 重定向到根路径 / ，使用307临时重定向（推荐，保留请求方法/体）
+  //   return NextResponse.redirect(new URL("/", request.url));
+  // }
 
   // 非/login路径，直接放行请求（必须返回，否则请求会被阻塞）
   return NextResponse.next();
