@@ -4,9 +4,6 @@ export interface Router {
   label: string;
   href: string;
   showInMenu?: boolean;
-  meta?: {
-    requiresAuth: boolean;
-    requiresRole: Role[];
-  };
+  requiresRole: Role[];
   children?: Router[];
 }

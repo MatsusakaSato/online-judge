@@ -1,25 +1,26 @@
-import type { Router } from "@/types/router.types";
+import { Router } from "@/types/router.types";
 
-const routes: Router[] = [
+const routes = [
   {
     key: "problemList",
     label: "题目列表",
     href: "/problems",
     showInMenu: true,
-    meta: {
-      requiresAuth: false,
-      requiresRole: [],
-    },
+    requiresRole: [],
   },
   {
     key: "userList",
     label: "用户列表",
     href: "/users",
     showInMenu: true,
-    meta: {
-      requiresAuth: true,
-      requiresRole: ["admin"],
-    },
+    requiresRole: ["admin"],
   },
-];
+  {
+    key: "profile",
+    label: "个人中心",
+    href: "/profile",
+    showInMenu: true,
+    requiresRole: ["user", "admin"],
+  },
+] as const satisfies Router[];
 export default routes;

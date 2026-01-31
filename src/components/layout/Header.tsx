@@ -5,6 +5,7 @@ import { Search, Code2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Avatar } from "@/components/ui/avatar";
 import userStore from "@/store/user.store";
+import Link from "next/link";
 
 export default function Header() {
   const user = userStore((state) => state.user);
@@ -31,9 +32,11 @@ export default function Header() {
           <img src="https://picsum.photos/200/200" alt="User avatar" />
         </Avatar>
         {/* 用户名文本：大屏显示，小屏隐藏，防止占空间 */}
-        <span className="text-base font-medium hidden md:inline-block">
-          {user?.username ?? "未登录"}
-        </span>
+        <Link href={"/login"}>
+          <span className="text-base font-medium hidden md:inline-block">
+            {user?.username ?? "未登录"}
+          </span>
+        </Link>
       </div>
     </div>
   );

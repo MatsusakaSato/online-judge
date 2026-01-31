@@ -2,35 +2,39 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Home,
-  Settings,
-  Users,
-  LogOut,
-  User,
-  LogIn,
-  Menu,
-  LucideProps,
-} from "lucide-react";
+import { Users, LogOut, Menu, LucideProps, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import routes from "@/router/router";
+import userStore from "@/store/user.store";
 
-const iconMap: Record<string, React.FC<LucideProps>> = {
-  dashboard: Home,
-  team: Users,
-  profile: User,
-  login: LogIn,
-  settings: Settings,
-};
-const sidebarItems = routes
-  .filter((route) => route.showInMenu === true)
-  .map((route) => ({
-    title: route.label,
-    icon: iconMap[route.key] || Menu,
-    path: route.href,
-  }));
 export default function Sidebar() {
+  const user = userStore((state) => state.user);
+  const setUser = userStore((state) => state.setUser);
+  const logout = () => {
+    setUser(null);
+  };
+
+  const iconMap: Record<
+    (typeof routes)[number]["key"],
+    React.FC<LucideProps>
+  > = {
+    problemList: Menu,
+    userList: Users,
+    profile: User,
+  };
+  const sidebarItems = routes
+    .filter((route) => route.showInMenu === true)
+    .filter((route) => {
+      if (route.requiresRole.length === 0) return true;
+      return route.requiresRole.some((item) => item === user?.role);
+    })
+    .map((route) => ({
+      title: route.label,
+      icon: iconMap[route.key] || Menu,
+      path: route.href,
+    }));
+
   const [activeItem, setActiveItem] = useState("Dashboard");
 
   return (
@@ -55,7 +59,11 @@ export default function Sidebar() {
 
       {/* 侧边栏底部 */}
       <div className="px-4 py-4 border-t">
-        <Button variant="ghost" className={cn("w-full justify-start gap-3")}>
+        <Button
+          variant="ghost"
+          className={cn("w-full justify-start gap-3")}
+          onClick={logout}
+        >
           <LogOut className="h-5 w-5" />
           <span>Logout</span>
         </Button>

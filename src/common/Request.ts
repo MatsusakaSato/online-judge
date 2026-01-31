@@ -102,7 +102,7 @@ class Request {
 
       // 3. 业务层错误处理
       if (res.code !== 200 && res.code !== 0) {
-        throw new Error(`业务请求失败：${res.msg || "未知错误"}`, {
+        throw new Error(`${res.msg || "未知错误"}`, {
           cause: { code: res.code, url, data: res },
         });
       }
