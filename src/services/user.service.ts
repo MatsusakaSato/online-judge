@@ -13,11 +13,13 @@ export const login = async (userdto: UserDTO): Promise<UserVO> => {
       password: true,
     },
   });
+  //用户不存在
   if (!user) {
     throw new Error("用户名或密码错误");
   }
-  const isVaild = await bcrypt.compare(userdto.password, user.password);
-  if (!isVaild) {
+  const isValid = await bcrypt.compare(userdto.password, user.password);
+  //用户存在但是密码不对
+  if (!isValid) {
     throw new Error("用户名或密码错误");
   }
   const { username, role } = user;
