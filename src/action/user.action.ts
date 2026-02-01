@@ -1,12 +1,11 @@
 "use server";
 import { UserDTO } from "@/types/dto.types";
-import { client } from "@/schema/db.client";
 import { UserInsertModel } from "@/schema/user.schema";
 import type { UserVO } from "@/types/vo.types";
 import * as bcrypt from "bcrypt";
 import { userRepo } from "@/repository/user.repo";
 import { Role } from "@/enum/enum";
-import R, { ResponseResult } from "@/common/ApiResponse";
+import { R, ResponseResult } from "@/common/ApiResponse";
 export const loginAction = async (
   userdto: UserDTO,
 ): Promise<ResponseResult<UserVO>> => {
