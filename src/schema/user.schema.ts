@@ -1,4 +1,4 @@
-import { Role } from "./../types/vo.types";
+import { Role } from "@/enum/enum";
 import {
   mysqlTable,
   int,

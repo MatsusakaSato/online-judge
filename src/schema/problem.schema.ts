@@ -8,25 +8,10 @@ import {
   index,
   json,
 } from "drizzle-orm/mysql-core";
+import { JudgeResultEnum, Status } from "@/enum/enum";
 type JudgeCase = { input: string; output: string }[];
 type JudgeConfig = { timeLimit: number; memoryLimit: number };
 type Tags = string[];
-enum JudgeResultEnum {
-  ACCEPTED = "Accepted",
-  COMPILE_ERROR = "Compile Error",
-  MEMORY_LIMIT_EXCEED = "Memory Limit Exceed",
-  TIME_LIMIT_EXCEED = "Time Limit Exceed",
-  WRONG_ANSWER = "Wrong Answer",
-  RUNTIME_ERROR = "Runtime Error",
-  WAITING = "Waiting",
-  DANGEROUS_OPERATION = "Dangerous Operation",
-}
-enum Status {
-  PENDING = 0, //刚提交
-  JUDGING = 1, //判题机判题中
-  SUCCESS = 2, //通过
-  FAILED = 3, //未通过
-}
 type JudgeInfo = {
   status: JudgeResultEnum;
   memory: number;
@@ -59,7 +44,7 @@ export const submitTable = mysqlTable(
     problemId: int("problem_id").notNull(),
     code: text("code").notNull(),
     language: varchar("language", { length: 255 }).notNull(),
-    state: int("status").notNull().default(Status.PENDING), //状态：待判题，判题中，成功，失败
+    state: varchar("status", { length: 16 }).notNull().default(Status.PENDING), //状态：待判题，判题中，成功，失败
     judgeInfo: json("judge_info").notNull().$type<JudgeInfo>().default({
       status: JudgeResultEnum.WAITING,
       memory: 0,

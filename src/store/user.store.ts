@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 import { UserVO } from "@/types/vo.types";
 import { Maybe } from "@/types/common";
 interface UserStore {
-  user: UserVO | null;
+  user: Maybe<UserVO>;
   setUser: (user: Maybe<UserVO>) => void;
 }
 const userStore = create<UserStore>()(

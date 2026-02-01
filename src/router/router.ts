@@ -1,5 +1,5 @@
 import { Router } from "@/types/router.types";
-import { fa } from "zod/v4/locales";
+import { Role } from "@/enum/enum";
 
 const routes: Router[] = [
   {
@@ -21,14 +21,14 @@ const routes: Router[] = [
     label: "用户列表",
     href: "/users",
     showInMenu: true,
-    requiresRole: ["admin"],
+    requiresRole: [Role.ADMIN],
   },
   {
     key: "profile",
     label: "个人中心",
     href: "/profile",
     showInMenu: true,
-    requiresRole: ["user", "admin"],
+    requiresRole: [Role.USER, Role.ADMIN],
   },
   {
     key: "login",
