@@ -3,10 +3,10 @@ import { client } from "@/schema/db.client";
 import { UserInsertModel } from "@/schema/user.schema";
 import type { UserVO } from "@/types/vo.types";
 import * as bcrypt from "bcrypt";
-import { getUserByEmail, createUser } from "@/repository/user.repo";
+import { userRepo } from "@/repository/user.repo";
 import { Role } from "@/enum/enum";
 export const login = async (userdto: UserDTO): Promise<UserVO> => {
-  const user = await getUserByEmail(userdto.email);
+  const user = await userRepo.getUserByEmail(userdto.email);
   //用户不存在
   if (!user) {
     throw new Error("用户名或密码错误");
@@ -25,7 +25,7 @@ export const login = async (userdto: UserDTO): Promise<UserVO> => {
 export const register = async (userdto: UserDTO): Promise<UserVO> => {
   const pwd_hash = await bcrypt.hash(userdto.password, bcrypt.genSaltSync());
   return await client.transaction(async (tx) => {
-    const existingUsers = await getUserByEmail(userdto.email);
+    const existingUsers = await userRepo.getUserByEmail(userdto.email);
     if (existingUsers) {
       throw new Error("用户已存在");
     }
@@ -34,7 +34,7 @@ export const register = async (userdto: UserDTO): Promise<UserVO> => {
       role: Role.USER,
       password: pwd_hash,
     };
-    const success = await createUser(newUser);
+    const success = await userRepo.createUser(newUser);
     if (!success) {
       throw new Error("系统错误");
     }
@@ -44,4 +44,9 @@ export const register = async (userdto: UserDTO): Promise<UserVO> => {
       role,
     };
   });
+};
+
+export const userService = {
+  login,
+  register,
 };
