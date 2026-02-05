@@ -1,7 +1,6 @@
 "use client";
 import Profile from "@/components/ProfileComponent";
 import userStore from "@/store/user.store";
-import { UserVO } from "@/types/vo.types";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 export default function ProfilePage() {

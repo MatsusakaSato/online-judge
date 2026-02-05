@@ -6,6 +6,7 @@ interface UserStore {
   user: Partial<UserSelectModel>;
   setUser: (user: Partial<UserSelectModel>) => void;
 }
+
 const userStore = create<UserStore>()(
   persist(
     (set) => ({

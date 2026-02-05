@@ -6,31 +6,24 @@ import {
 } from "@/schema/user.schema";
 import { eq, and } from "drizzle-orm";
 
-const createUser = async (user: UserInsertModel): Promise<boolean> => {
+const createUser = async (user: UserInsertModel) => {
   const [result] = await client.insert(userTable).values(user);
   return result.affectedRows > 0;
 };
 
-const getUserById = async (
-  id: number,
-): Promise<UserSelectModel | undefined> => {
+const getUserById = async (id: number) => {
   return await client.query.userTable.findFirst({
     where: and(eq(userTable.id, id), eq(userTable.isDeleted, false)),
   });
 };
 
-const getUserByEmail = async (
-  email: string,
-): Promise<UserSelectModel | undefined> => {
+const getUserByEmail = async (email: string) => {
   return await client.query.userTable.findFirst({
     where: and(eq(userTable.email, email), eq(userTable.isDeleted, false)),
   });
 };
 
-const getUsers = async (
-  limit?: number,
-  offset?: number,
-): Promise<UserSelectModel[]> => {
+const getUsers = async (limit?: number, offset?: number) => {
   return await client.query.userTable.findMany({
     where: eq(userTable.isDeleted, false),
     limit,
@@ -38,19 +31,15 @@ const getUsers = async (
   });
 };
 
-const updateUser = async (
-  id: number,
-  user: Partial<UserInsertModel>,
-): Promise<boolean> => {
+const updateUser = async (id: number, user: Partial<UserInsertModel>) => {
   const [result] = await client
     .update(userTable)
     .set(user)
     .where(and(eq(userTable.id, id), eq(userTable.isDeleted, false)));
-
   return result.affectedRows > 0;
 };
 
-const deleteUser = async (id: number): Promise<boolean> => {
+const deleteUser = async (id: number) => {
   const [result] = await client
     .update(userTable)
     .set({ isDeleted: true })

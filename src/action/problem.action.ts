@@ -10,9 +10,6 @@ export const createProblemAction = async (
   return await problemRepo.createProblem({
     ...problem,
     userId,
-    submitNum: 0,
-    acceptedNum: 0,
-    isDeleted: false,
   });
 };
 
