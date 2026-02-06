@@ -1,6 +1,6 @@
 "use server";
 
-import { problemRepo } from "@/repository/problem.repo";
+import * as problemRepo from "@/repository/problem.repo";
 import { ProblemInsertModel } from "@/schema/problem.schema";
 
 export const createProblemAction = async (

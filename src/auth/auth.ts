@@ -1,4 +1,4 @@
-import { userRepo } from "@/repository/user.repo";
+import * as userRepo from "@/repository/user.repo";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import * as bcrypt from "bcrypt";

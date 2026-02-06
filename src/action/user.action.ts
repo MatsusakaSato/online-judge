@@ -2,7 +2,7 @@
 
 import { UserInsertModel } from "@/schema/user.schema";
 import * as bcrypt from "bcrypt";
-import { userRepo } from "@/repository/user.repo";
+import * as userRepo from "@/repository/user.repo";
 import { Role } from "@/enum/enum";
 import { R } from "@/common/ApiResponse";
 export const loginAction = async (userdto: UserInsertModel) => {

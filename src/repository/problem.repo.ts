@@ -5,18 +5,18 @@ import {
 } from "@/schema/problem.schema";
 import { eq, and, sql } from "drizzle-orm";
 
-const createProblem = async (problem: ProblemInsertModel) => {
+export const createProblem = async (problem: ProblemInsertModel) => {
   const [result] = await client.insert(problemTable).values(problem);
   return result.affectedRows > 0;
 };
 
-const getProblemById = async (id: number) => {
+export const getProblemById = async (id: number) => {
   return await client.query.problemTable.findFirst({
     where: and(eq(problemTable.id, id), eq(problemTable.isDeleted, false)),
   });
 };
 
-const getProblems = async (limit?: number, offset?: number) => {
+export const getProblems = async (limit?: number, offset?: number) => {
   return await client.query.problemTable.findMany({
     where: eq(problemTable.isDeleted, false),
     limit,
@@ -24,7 +24,7 @@ const getProblems = async (limit?: number, offset?: number) => {
   });
 };
 
-const updateProblem = async (
+export const updateProblem = async (
   id: number,
   problem: Partial<ProblemInsertModel>,
 ) => {
@@ -36,7 +36,7 @@ const updateProblem = async (
   return result.affectedRows > 0;
 };
 
-const deleteProblem = async (id: number) => {
+export const deleteProblem = async (id: number) => {
   const [result] = await client
     .update(problemTable)
     .set({ isDeleted: true })
@@ -45,7 +45,7 @@ const deleteProblem = async (id: number) => {
   return result.affectedRows > 0;
 };
 
-const incrementSubmitCount = async (problemId: number) => {
+export const incrementSubmitCount = async (problemId: number) => {
   const [result] = await client
     .update(problemTable)
     .set({
@@ -58,7 +58,7 @@ const incrementSubmitCount = async (problemId: number) => {
   return result.affectedRows > 0;
 };
 
-const incrementAcceptedCount = async (problemId: number) => {
+export const incrementAcceptedCount = async (problemId: number) => {
   const [result] = await client
     .update(problemTable)
     .set({
@@ -69,14 +69,4 @@ const incrementAcceptedCount = async (problemId: number) => {
     );
 
   return result.affectedRows > 0;
-};
-
-export const problemRepo = {
-  createProblem,
-  getProblemById,
-  getProblems,
-  updateProblem,
-  deleteProblem,
-  incrementSubmitCount,
-  incrementAcceptedCount,
 };
