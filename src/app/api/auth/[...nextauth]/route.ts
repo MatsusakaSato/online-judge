@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import * as bcrypt from "bcrypt";
 import { Role } from "@/enum/enum";
 
+
 const handler = NextAuth({
   pages: {
     signIn: "/login",
@@ -19,17 +20,13 @@ const handler = NextAuth({
         password: { label: "密码", type: "password" },
       },
       async authorize(credentials) {
-        // 检查 credentials 是否包含 email 和 password
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("邮箱或密码不能为空");
-        }
-        const user = await getUserByEmail(credentials?.email);
+        const user = await getUserByEmail(credentials?.email!);
         //用户不存在
         if (!user) {
           throw new Error("用户不存在");
         }
         const isValid = await bcrypt.compare(
-          credentials?.password,
+          credentials?.password!,
           user.password,
         );
         //用户存在但是密码不对
@@ -40,7 +37,7 @@ const handler = NextAuth({
           username: user.username,
           role: user.role,
           email: user.email,
-          id: user.id.toString(),
+          id: Number(user.id),
         };
       },
     }),
@@ -51,7 +48,7 @@ const handler = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         // 将 authorize 返回的自定义字段存入 token
-        token.id = user.id;
+        token.id = Number(user.id);
         token.role = user.role;
         token.username = user.username;
       }
@@ -62,7 +59,7 @@ const handler = NextAuth({
     // 负责将 token 中的内容同步到前端可见的 session 对象中
     async session({ session, token }) {
       if (token && session.user) {
-        session.user.id = token.id as string;
+        session.user.id = Number(token.id);
         session.user.role = token.role as Role;
         session.user.username = token.username as string;
       }

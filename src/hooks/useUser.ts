@@ -4,10 +4,10 @@ export default function useUser() {
   const { data: session, status, update } = useSession();
   return {
     // 基础数据
-    username: session?.user?.username,
-    email: session?.user?.email,
-    role: session?.user?.role,
-    id: session?.user?.id,
+    username: session?.user?.username ?? undefined,
+    email: session?.user?.email ?? undefined,
+    role: session?.user?.role ?? undefined,
+    id: session?.user?.id ?? undefined,
 
     // 状态判断
     isLoading: status === "loading",

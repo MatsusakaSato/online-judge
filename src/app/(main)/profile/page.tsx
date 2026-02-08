@@ -1,10 +1,10 @@
 "use client";
 import Profile from "@/components/ProfileComponent";
-import userStore from "@/store/user.store";
+import useUser from "@/hooks/useUser";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 export default function ProfilePage() {
-  const user = userStore.getState().user;
+  const user = useUser();
   const route = useRouter();
   useEffect(() => {
     if (!user) {
@@ -14,7 +14,7 @@ export default function ProfilePage() {
   }, []);
   return (
     <main className="flex-1 flex justify-center items-center">
-      <Profile user={user!} />
+      <Profile user={user} />
     </main>
   );
 }
