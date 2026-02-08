@@ -20,32 +20,6 @@ export const loginAction = async (userdto: UserInsertModel) => {
   return R.ok("登陆成功", { role, username, email, id });
 };
 
-export const validateUserAction = async (
-  credentials: Record<string, any> | undefined,
-) => {
-  const email = credentials?.email;
-  const password = credentials?.password;
-  if (!email || !password) {
-    return null;
-  }
-  const user = await userRepo.getUserByEmail(email);
-  //用户不存在
-  if (!user) {
-    return null;
-  }
-  const isValid = await bcrypt.compare(password, user.password);
-  //用户存在但是密码不对
-  if (!isValid) {
-    return null;
-  }
-  return {
-    username: user.username,
-    role: user.role,
-    email: user.email,
-    id: user.id.toString(),
-  };
-};
-
 export const registerAction = async (userdto: UserInsertModel) => {
   const existingUsers = await userRepo.getUserByEmail(userdto.email);
   if (existingUsers) {

@@ -6,8 +6,8 @@ export default function useUser() {
     // 基础数据
     username: session?.user?.username ?? undefined,
     email: session?.user?.email ?? undefined,
-    role: session?.user?.role ?? undefined,
-    id: session?.user?.id ?? undefined,
+    role: session?.user?.role,
+    id: session?.user?.id,
 
     // 状态判断
     isLoading: status === "loading",

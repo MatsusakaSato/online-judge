@@ -8,7 +8,6 @@ import routes from "@/router/router";
 
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 export default function Sidebar() {
   const { data: session } = useSession();
