@@ -4,7 +4,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import * as bcrypt from "bcrypt";
 import { Role } from "@/enum/enum";
 
-
 const handler = NextAuth({
   pages: {
     signIn: "/login",
@@ -36,6 +35,8 @@ const handler = NextAuth({
         return {
           username: user.username,
           role: user.role,
+          //email name image是next-auth的一等公民
+          //email会自动同步
           email: user.email,
           id: Number(user.id),
         };

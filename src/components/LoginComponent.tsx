@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
-import { loginAction, registerAction } from "@/action/user.action";
+import { registerAction } from "@/action/user.action";
 import { signIn } from "next-auth/react";
 
 // 1. 定义表单验证规则（Zod Schema）
@@ -102,7 +102,7 @@ export default function LoginRegisterForm() {
   };
 
   return (
-    <div className="w-full max-w-sm mx-auto mt-8 p-6 bg-card rounded-lg shadow-md">
+    <div className="w-full max-w-sm mx-auto mt-8 p-6 bg-card rounded-lg shadow-lg">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         {/* 登录/注册标签切换 */}
         <TabsList className="grid w-full grid-cols-2 mb-6">
