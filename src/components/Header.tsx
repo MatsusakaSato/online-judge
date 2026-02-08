@@ -34,7 +34,7 @@ export default function Header() {
         {/* 用户名文本：大屏显示，小屏隐藏，防止占空间 */}
         <Link href={"/login"}>
           <span className="text-base font-medium hidden md:inline-block">
-            {user?.user?.username ?? "未登录"}
+            {user?.username ?? "未登录"}
           </span>
         </Link>
       </div>

@@ -19,13 +19,17 @@ const handler = NextAuth({
         password: { label: "密码", type: "password" },
       },
       async authorize(credentials) {
-        const user = await getUserByEmail(credentials?.email!);
+        // 检查 credentials 是否包含 email 和 password
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error("邮箱或密码不能为空");
+        }
+        const user = await getUserByEmail(credentials?.email);
         //用户不存在
         if (!user) {
           throw new Error("用户不存在");
         }
         const isValid = await bcrypt.compare(
-          credentials?.password!,
+          credentials?.password,
           user.password,
         );
         //用户存在但是密码不对

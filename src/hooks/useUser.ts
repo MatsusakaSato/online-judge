@@ -4,7 +4,8 @@ export default function useUser() {
   const { data: session, status, update } = useSession();
   return {
     // 基础数据
-    user: session?.user,
+    username: session?.user?.username,
+    email: session?.user?.email,
     role: session?.user?.role,
     id: session?.user?.id,
 
