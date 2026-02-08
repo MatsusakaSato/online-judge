@@ -22,7 +22,7 @@ const handler = NextAuth({
         const user = await getUserByEmail(credentials?.email!);
         //用户不存在
         if (!user) {
-          throw new Error("用户不存在");
+          throw new Error("用户名或密码错误");
         }
         const isValid = await bcrypt.compare(
           credentials?.password!,
@@ -58,7 +58,7 @@ const handler = NextAuth({
 
     // 2. 当客户端请求 session 时调用
     // 负责将 token 中的内容同步到前端可见的 session 对象中
-    async session({ session, token }) {
+    async session({ session, token ,trigger}) {
       if (token && session.user) {
         session.user.id = Number(token.id);
         session.user.role = token.role as Role;

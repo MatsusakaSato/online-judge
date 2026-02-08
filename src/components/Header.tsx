@@ -37,14 +37,16 @@ export default function Header() {
           <img src="https://picsum.photos/200/200" alt="User avatar" />
         </Avatar>
         {/* 用户名文本：大屏显示，小屏隐藏，防止占空间 */}
-        <Link href={"/login"} className="flex flex-col gap-0.5 items-start">
-          <span className="text-base font-medium hidden md:inline-block">
-            {user?.username ?? "未登录"}
-          </span>
+        <div className="flex flex-col gap-0.5 items-center">
+          <Link href={"/login"}>
+            <span className="text-base font-medium hidden md:inline-block">
+              {user?.username ?? "未登录"}
+            </span>
+          </Link>
           {user?.email && (
             <HoverCard>
               <HoverCardTrigger asChild>
-                <span className="text-sm text-muted-foreground hidden md:inline-block truncate max-w-[100px] cursor-pointer">
+                <span className="text-sm text-muted-foreground hidden md:inline-block max-w-[120px] cursor-pointer overflow-hidden text-ellipsis whitespace-nowrap [direction:rtl]">
                   {user.email}
                 </span>
               </HoverCardTrigger>
@@ -53,7 +55,7 @@ export default function Header() {
               </HoverCardContent>
             </HoverCard>
           )}
-        </Link>
+        </div>
       </div>
     </div>
   );
