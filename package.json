@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@bytemd/plugin-gfm": "^1.22.0",
+    "@bytemd/plugin-highlight": "^1.22.0",
+    "@bytemd/plugin-math": "^1.22.0",
     "@bytemd/react": "^1.22.0",
     "@hookform/resolvers": "^5.2.2",
     "@monaco-editor/react": "^4.7.0",
@@ -27,6 +29,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "drizzle-orm": "^0.45.1",
+    "github-markdown-css": "^5.9.0",
     "highlight.js": "^11.11.1",
     "iron-session": "^8.0.4",
     "jsonwebtoken": "^9.0.3",
