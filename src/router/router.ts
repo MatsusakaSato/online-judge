@@ -1,4 +1,4 @@
-import { Role } from "@/enum/enum";
+import { Role } from "@/constants/enum";
 
 export interface Router {
   key: string;

@@ -2,7 +2,7 @@ import { getUserByEmail } from "@/repository/user.repo";
 import NextAuth, { Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import * as bcrypt from "bcrypt";
-import { Role } from "@/enum/enum";
+import { Role } from "@/constants/enum";
 
 const handler = NextAuth({
   pages: {
@@ -58,7 +58,7 @@ const handler = NextAuth({
 
     // 2. 当客户端请求 session 时调用
     // 负责将 token 中的内容同步到前端可见的 session 对象中
-    async session({ session, token ,trigger}) {
+    async session({ session, token, trigger }) {
       if (token && session.user) {
         session.user.id = Number(token.id);
         session.user.role = token.role as Role;

@@ -1,4 +1,4 @@
-import { ApiCode } from "@/enum/enum";
+import { ApiCode } from "@/constants/enum";
 
 export interface ResponseResult<T> {
   code: number;

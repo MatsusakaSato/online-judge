@@ -1,6 +1,6 @@
 import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
 import { JWT } from "next-auth/jwt";
-import { Role } from "@/enum/enum";
+import { Role } from "@/constants/enum";
 
 declare module "next-auth" {
   // 1. 扩展 User 接口：解决 authorize 返回值的类型问题

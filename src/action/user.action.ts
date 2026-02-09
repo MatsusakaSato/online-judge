@@ -3,7 +3,7 @@
 import { UserInsertModel } from "@/schema/user.schema";
 import * as bcrypt from "bcrypt";
 import * as userRepo from "@/repository/user.repo";
-import { Role } from "@/enum/enum";
+import { Role } from "@/constants/enum";
 import { R } from "@/common/ApiResponse";
 import { getServerSession } from "next-auth";
 
