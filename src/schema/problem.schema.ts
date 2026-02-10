@@ -21,7 +21,7 @@ export const problemTable = mysqlTable(
   "problem",
   {
     id: int("id").autoincrement().primaryKey(),
-    title: varchar("title", { length: 512 }).notNull(),
+    title: varchar("title", { length: 512 }).notNull().unique(),
     content: text("content").notNull(),
     tags: json("tags").$type<Tags>(), //json数组，比如["二叉树","难","并查集","遍历"]
     answer: text("answer"), //（官方）题解
