@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Trash2, CheckSquare, Square } from "lucide-react";
-import { ProblemBasicInfo } from "@/repository/problem.repo";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

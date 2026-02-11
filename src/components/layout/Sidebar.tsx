@@ -1,13 +1,53 @@
 "use client";
 
 import { useState } from "react";
-import { Users, LogOut, Menu, LucideProps, User, Home,PlusCircle} from "lucide-react";
+import {
+  Users,
+  LogOut,
+  LucideProps,
+  User,
+  Home,
+  PlusCircle,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import routes from "@/router/router";
-
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
+import { Role } from "@/constants/enum";
+
+interface Route {
+  label: string;
+  href: string;
+  icon: React.FC<LucideProps>;
+  requiresRole: Role[];
+}
+
+const routes: Route[] = [
+  {
+    label: "首页",
+    href: "/",
+    icon: Home,
+    requiresRole: [],
+  },
+  {
+    label: "用户列表",
+    href: "/users",
+    icon: Users,
+    requiresRole: [Role.ADMIN],
+  },
+  {
+    label: "个人中心",
+    href: "/profile",
+    icon: User,
+    requiresRole: [Role.USER, Role.ADMIN],
+  },
+  {
+    label: "创建题目",
+    href: "/create-problem",
+    icon: PlusCircle,
+    requiresRole: [Role.ADMIN],
+  },
+];
 
 export default function Sidebar() {
   const { data: session } = useSession();
@@ -15,33 +55,21 @@ export default function Sidebar() {
     signOut({ callbackUrl: "/" });
   };
 
-  const iconMap: Record<
-    (typeof routes)[number]["key"],
-    React.FC<LucideProps>
-    > = {
-    home: Home,
-    problemList: Menu,
-    userList: Users,
-    profile: User,
-    createProblem: PlusCircle,
-  };
   const sidebarItems = routes
-    .filter((route) => route.showInMenu === true)
     .filter((route) => {
       if (route.requiresRole.length === 0) return true;
       return route.requiresRole.some((item) => item === session?.user?.role);
     })
     .map((route) => ({
       title: route.label,
-      icon: iconMap[route.key] || Menu,
+      icon: route.icon,
       path: route.href,
     }));
 
-  const [activeItem, setActiveItem] = useState("Dashboard");
+  const [activeItem, setActiveItem] = useState("首页");
 
   return (
     <div className="h-full flex flex-col">
-      {/* 侧边栏菜单 */}
       <nav className="flex-1 px-4 py-4 overflow-y-auto">
         <ul className="space-y-4">
           {sidebarItems.map((item) => (
@@ -61,7 +89,6 @@ export default function Sidebar() {
         </ul>
       </nav>
 
-      {/* 侧边栏底部 */}
       <div className="px-4 py-4 border-t">
         <Button
           variant="ghost"
