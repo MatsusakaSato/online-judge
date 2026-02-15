@@ -3,16 +3,16 @@ import {
   CodeSandbox,
   ExecuteCodeRequest,
   ExecuteCodeResponse,
-} from "@/core/interface/judge";
+} from "@/core/interface/judge.interface";
 
 export default class ExampleSandbox implements CodeSandbox {
   execute(req: ExecuteCodeRequest): ExecuteCodeResponse {
     console.log("example code sandbox executing...");
     return {
-      time: null,
-      memory: null,
-      compileOutput: null,
-      stdout: null,
+      time: 100,
+      memory: 1024,
+      compileOutput: "",
+      stdout: ["3", "7"],
       stderr: null,
       status: Status.SUCCESS,
       desc: JudgeResultEnum.ACCEPTED,

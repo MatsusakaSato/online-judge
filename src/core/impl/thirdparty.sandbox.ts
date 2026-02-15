@@ -3,7 +3,7 @@ import {
   CodeSandbox,
   ExecuteCodeRequest,
   ExecuteCodeResponse,
-} from "@/core/interface/judge";
+} from "@/core/interface/judge.interface";
 export default class ThirdPartySandbox implements CodeSandbox {
   execute(req: ExecuteCodeRequest): ExecuteCodeResponse {
     console.log("thirdparty code sandbox executing...");

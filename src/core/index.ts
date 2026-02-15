@@ -1,6 +1,7 @@
 import ExampleSandbox from "./impl/example.sandbox";
 import RemoteSandbox from "./impl/remote.sandbox";
 import ThirdPartySandbox from "./impl/thirdparty.sandbox";
+import SandboxProxy from "./sandbox.proxy";
 class CodeSandboxFactory {
   getInstance(type: "example" | "remote" | "thirdparty") {
     switch (type) {
@@ -15,5 +16,7 @@ class CodeSandboxFactory {
     }
   }
 }
-const sandbox = new CodeSandboxFactory().getInstance("example");
+const sandbox = new SandboxProxy(
+  new CodeSandboxFactory().getInstance("example"),
+);
 export default sandbox;
