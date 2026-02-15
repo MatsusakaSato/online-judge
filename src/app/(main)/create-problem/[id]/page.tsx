@@ -17,6 +17,7 @@ export default function CreateProblemPage() {
     };
     _();
   }, []);
+  //TODO 这里的用户id是写死的，应该改成动态获取用户id
   return (
     <>
       <CreateProblemForm initialValue={problemInfo} userId={1} />

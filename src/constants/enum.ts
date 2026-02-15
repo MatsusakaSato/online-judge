@@ -2,6 +2,13 @@ enum Role {
   USER = "user",
   ADMIN = "admin",
 }
+enum Language {
+  CPP = "cpp",
+  JAVA = "java",
+  PYTHON = "python",
+  JAVASCRIPT = "javascript",
+  TYPESCRIPT = "typescript",
+}
 
 enum JudgeResultEnum {
   ACCEPTED = "Accepted",
@@ -26,4 +33,4 @@ enum ApiCode {
   ERROR = 1,
 }
 
-export { Role, JudgeResultEnum, Status, ApiCode };
+export { Role, JudgeResultEnum, Status, ApiCode, Language };
