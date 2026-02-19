@@ -4,7 +4,7 @@ import {
   UserInsertModel,
   UserSelectModel,
 } from "@/schema/user.schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, sql } from "drizzle-orm";
 
 export const createUser = async (user: UserInsertModel) => {
   const [result] = await client.insert(userTable).values(user);
@@ -31,7 +31,10 @@ export const getUsers = async (limit?: number, offset?: number) => {
   });
 };
 
-export const updateUser = async (id: number, user: Partial<UserInsertModel>) => {
+export const updateUser = async (
+  id: number,
+  user: Partial<UserInsertModel>,
+) => {
   const [result] = await client
     .update(userTable)
     .set(user)
@@ -46,4 +49,12 @@ export const deleteUser = async (id: number) => {
     .where(and(eq(userTable.id, id), eq(userTable.isDeleted, false)));
 
   return result.affectedRows > 0;
+};
+
+export const getUsersCount = async () => {
+  const result = await client
+    .select({ count: sql<number>`count(*)` })
+    .from(userTable)
+    .where(eq(userTable.isDeleted, false));
+  return result[0].count;
 };

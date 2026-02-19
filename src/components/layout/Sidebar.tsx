@@ -31,7 +31,7 @@ const routes: Route[] = [
   },
   {
     label: "用户列表",
-    href: "/users",
+    href: "/user-list",
     icon: Users,
     requiresRole: [Role.ADMIN],
   },

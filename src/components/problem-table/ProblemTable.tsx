@@ -7,14 +7,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Trash2, CheckSquare, Square } from "lucide-react";
 
@@ -53,7 +46,7 @@ export default function DataTable<TData, TValue>({
       {selectedRows && selectedRows.length > 0 && (
         <div className="flex items-center gap-4 bg-red-50 p-4 rounded-lg border border-red-200">
           <span className="text-sm text-red-700">
-            已选择 {selectedRows.length} 个题目
+            已选择 {selectedRows.length} 项
           </span>
           <Button
             variant="outline"
