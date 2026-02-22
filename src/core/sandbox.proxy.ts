@@ -10,9 +10,9 @@ export default class SandboxProxy implements CodeSandbox {
   constructor(sandbox: CodeSandbox) {
     this.sandbox = sandbox;
   }
-  execute(req: ExecuteCodeRequest): ExecuteCodeResponse {
+  async execute(req: ExecuteCodeRequest): Promise<ExecuteCodeResponse> {
     consola.info("代码沙箱请求信息：", req);
-    const result = this.sandbox.execute(req);
+    const result = await this.sandbox.execute(req);
     consola.info("代码沙箱响应信息：", result);
     return result;
   }

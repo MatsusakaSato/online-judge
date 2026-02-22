@@ -5,7 +5,7 @@ import {
   ExecuteCodeResponse,
 } from "@/core/interface/judge.interface";
 export default class RemoteSandbox implements CodeSandbox {
-  execute(req: ExecuteCodeRequest): ExecuteCodeResponse {
+  async execute(req: ExecuteCodeRequest): Promise<ExecuteCodeResponse> {
     console.log("remote code sandbox executing...");
     return {
       time: null,

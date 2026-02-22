@@ -15,5 +15,5 @@ export interface ExecuteCodeResponse {
   desc: string; //描述
 }
 export interface CodeSandbox {
-  execute: (req: ExecuteCodeRequest) => ExecuteCodeResponse;
+  execute: (req: ExecuteCodeRequest) => Promise<ExecuteCodeResponse>;
 }

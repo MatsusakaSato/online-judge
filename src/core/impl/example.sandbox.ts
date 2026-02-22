@@ -6,7 +6,7 @@ import {
 } from "@/core/interface/judge.interface";
 
 export default class ExampleSandbox implements CodeSandbox {
-  execute(req: ExecuteCodeRequest): ExecuteCodeResponse {
+  async execute(req: ExecuteCodeRequest): Promise<ExecuteCodeResponse> {
     console.log("example code sandbox executing...");
     return {
       time: 100,

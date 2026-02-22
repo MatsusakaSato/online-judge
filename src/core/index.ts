@@ -17,6 +17,6 @@ class CodeSandboxFactory {
   }
 }
 const sandbox = new SandboxProxy(
-  new CodeSandboxFactory().getInstance("example"),
+  new CodeSandboxFactory().getInstance("thirdparty"),
 );
 export default sandbox;
