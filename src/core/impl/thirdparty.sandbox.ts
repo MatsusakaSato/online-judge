@@ -33,7 +33,7 @@ export default class ThirdPartySandbox implements CodeSandbox {
     console.log("ThirdParty sandbox executing...", {
       language: req.language,
       sourceCodeLength: req.source_code.length,
-      stdinCount: req.stdin?.length || 0,
+      stdinLength: req.stdin?.length || 0,
     });
 
     // 1. 获取 language_id
@@ -50,11 +50,23 @@ export default class ThirdPartySandbox implements CodeSandbox {
       };
     }
 
-    // 2. 处理 stdin（将多个输入用换行符连接）
-    const stdin = req.stdin ? req.stdin.join("\n") : "";
-
     try {
-      // 3. 调用 Judge0 API（同步模式，wait=true）
+      const requestBody: Judge0SubmissionRequest = {
+        language_id: languageId,
+        source_code: req.source_code,
+        stdin: req.stdin,
+        expected_output: req.expectedOutput,
+      };
+
+      if (typeof req.timeLimit === "number" && Number.isFinite(req.timeLimit)) {
+        requestBody.cpu_time_limit = Math.max(req.timeLimit / 1000, 0.001);
+      }
+
+      if (typeof req.memoryLimit === "number" && Number.isFinite(req.memoryLimit)) {
+        requestBody.memory_limit = req.memoryLimit;
+      }
+
+      // 2. 调用 Judge0 API（同步模式，wait=true）
       const response = await fetch(
         `${this.apiUrl}/submissions?wait=true`,
         {
@@ -62,21 +74,21 @@ export default class ThirdPartySandbox implements CodeSandbox {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            language_id: languageId,
-            source_code: req.source_code,
-            stdin: stdin,
-          } as Judge0SubmissionRequest),
+          body: JSON.stringify(requestBody),
         }
       );
 
       if (!response.ok) {
-        throw new Error(`Judge0 API error: ${response.status} ${response.statusText}`);
+        const errorText = await response.text();
+        throw new Error(
+          `Judge0 API error: ${response.status} ${response.statusText}${
+            errorText ? ` - ${errorText}` : ""
+          }`,
+        );
       }
 
       const result: Judge0Submission = await response.json();
-
-      // 4. 解析响应，转换为项目格式
+      // 3. 解析响应，转换为项目格式
       return this.convertResponse(result);
     } catch (error) {
       console.error("ThirdParty sandbox error:", error);
@@ -102,16 +114,11 @@ export default class ThirdPartySandbox implements CodeSandbox {
       desc: result.status.description,
     };
 
-    // 转换 stdout 为字符串数组
-    const stdoutArray = result.stdout
-      ? result.stdout.split("\n").filter((line) => line !== "")
-      : null;
-
     // 转换时间（字符串转为毫秒数）
     const timeMs = result.time ? Math.round(parseFloat(result.time) * 1000) : null;
 
     return {
-      stdout: stdoutArray,
+      stdout: result.stdout,
       time: timeMs,
       memory: result.memory,
       compileOutput: result.compile_output,

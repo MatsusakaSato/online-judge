@@ -40,5 +40,11 @@ export default async function ProblemDetailPage({
     );
   }
 
-  return <ProblemDetailClient content={problem.content || ""} />;
+  return (
+    <ProblemDetailClient
+      problemId={problem.id}
+      content={problem.content || ""}
+      answer={problem.answer || ""}
+    />
+  );
 }

@@ -5,20 +5,32 @@ import { CodeEditorFooter } from "@/components/editor/CodeEditorFooter";
 import { MonacoEditor } from "@/components/editor/MonacoEditor";
 import { useCodeEditor } from "@/hooks/useCodeEditor";
 import { LANGUAGE_OPTIONS } from "@/constants/codeEditor";
-import { useEffect } from "react";
 
-export default function CodeEditor() {
+interface CodeEditorProps {
+  problemId: number;
+  onSubmissionStart?: () => void;
+  onSubmissionSettled?: () => void | Promise<void>;
+}
+
+export default function CodeEditor({
+  problemId,
+  onSubmissionStart,
+  onSubmissionSettled,
+}: CodeEditorProps) {
   const {
     selectedLanguage,
     code,
+    isSubmitting,
     handleEditorChange,
     handleLanguageChange,
     handleSubmit,
     handleEditorMount,
-  } = useCodeEditor();
-  useEffect(() => {
-    console.log(code);
-  }, [code]);
+  } = useCodeEditor({
+    problemId,
+    onSubmissionStart,
+    onSubmissionSettled,
+  });
+
   return (
     <div className="flex flex-col h-full bg-card overflow-hidden border">
       <CodeEditorHeader
@@ -32,7 +44,7 @@ export default function CodeEditor() {
         onChange={handleEditorChange}
         onMount={handleEditorMount}
       />
-      <CodeEditorFooter onSubmit={handleSubmit} />
+      <CodeEditorFooter onSubmit={handleSubmit} isSubmitting={isSubmitting} />
     </div>
   );
 }

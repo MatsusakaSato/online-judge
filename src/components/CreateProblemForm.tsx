@@ -47,7 +47,7 @@ const judgeConfigSchema = z.object({
     .max(10000, "时间限制不能超过10000ms"),
   memoryLimit: z
     .number()
-    .min(1, "内存限制必须大于0")
+    .min(2, "内存限制不能低于2MB")
     .max(1024, "内存限制不能超过1024MB"),
 });
 
@@ -433,7 +433,7 @@ export default function CreateProblemForm({
                           />
                         </FormControl>
                         <p className="text-[0.8rem] text-muted-foreground">
-                          程序运行的最大内存，单位：MB
+                          程序运行的最大内存，单位：MB，最少 2MB
                         </p>
                         <FormMessage />
                       </FormItem>

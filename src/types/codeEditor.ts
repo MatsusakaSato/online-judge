@@ -32,11 +32,12 @@ export interface CodeEditorState {
   selectedLanguage: Language;
   code: string;
   editorMounted: boolean;
+  isSubmitting: boolean;
 }
 
 export interface CodeEditorHandlers {
   handleEditorChange: (value: string | undefined) => void;
   handleLanguageChange: (language: Language) => void;
-  handleSubmit: () => void;
+  handleSubmit: () => Promise<void>;
   handleEditorMount: (editor: any, monaco: any) => void;
 }

@@ -6,6 +6,7 @@ import * as userRepo from "@/repository/user.repo";
 import { Role } from "@/constants/enum";
 import { R } from "@/common/ApiResponse";
 import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth-options";
 
 export const registerAction = async (userdto: UserInsertModel) => {
   const existingUsers = await userRepo.getUserByEmail(userdto.email);
@@ -29,7 +30,7 @@ export const registerAction = async (userdto: UserInsertModel) => {
 export const updateUserInfoAction = async (
   userInfo: Partial<UserInsertModel>,
 ) => {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   if (!session) {
     return R.error("未登录");
   }

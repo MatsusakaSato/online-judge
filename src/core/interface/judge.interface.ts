@@ -3,10 +3,13 @@ import { Language } from "@/constants/enum";
 export interface ExecuteCodeRequest {
   source_code: string; //源代码
   language: Language; //语言
-  stdin: string[]; //输入用例
+  stdin?: string; //输入用例
+  expectedOutput?: string; //预期输出
+  timeLimit?: number; //时间限制（ms）
+  memoryLimit?: number; //内存限制（KB）
 }
 export interface ExecuteCodeResponse {
-  stdout: string[] | null; //程序输出
+  stdout: string | null; //程序输出
   time: number | null; //程序执行时间
   memory: number | null; //程序占用内存
   compileOutput: string | null; //编译输出（非编译型语言没有）

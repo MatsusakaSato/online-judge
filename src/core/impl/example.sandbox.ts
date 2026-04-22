@@ -12,7 +12,7 @@ export default class ExampleSandbox implements CodeSandbox {
       time: 100,
       memory: 1024,
       compileOutput: "",
-      stdout: ["3", "7"],
+      stdout: "3",
       stderr: null,
       status: Status.SUCCESS,
       desc: JudgeResultEnum.ACCEPTED,

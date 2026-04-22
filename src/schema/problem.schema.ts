@@ -9,14 +9,10 @@ import {
   json,
 } from "drizzle-orm/mysql-core";
 import { JudgeResultEnum, Status } from "@/constants/enum";
-export type JudgeCase = { input: string; output: string }[];
-type JudgeConfig = { timeLimit: number; memoryLimit: number };
+import { JudgeCase, JudgeConfig, JudgeInfo } from "@/types/judge";
+
 type Tags = string[];
-type JudgeInfo = {
-  status: JudgeResultEnum;
-  memory: number;
-  time: number;
-}; //占用内存（KB），消耗时间（ms）
+
 export const problemTable = mysqlTable(
   "problem",
   {
