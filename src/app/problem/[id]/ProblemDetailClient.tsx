@@ -8,6 +8,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import CodeEditor from "@/components/editor/CodeEditor";
+import CodeAnalysisPanel from "@/components/problem/CodeAnalysisPanel";
 import MdViewComponent from "@/components/markdown/MdViewComponent";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
@@ -22,8 +23,9 @@ import {
 import { ResponseResult } from "@/common/ApiResponse";
 import { JudgeResultEnum } from "@/constants/enum";
 import { SubmissionRecord } from "@/types/judge";
+import { CodeAnalysisReport } from "@/types/problemAnalysis";
 
-type ProblemTab = "detail" | "solution" | "submission";
+type ProblemTab = "detail" | "solution" | "analysis" | "submission";
 
 interface ProblemDetailClientProps {
   problemId: number;
@@ -70,6 +72,11 @@ export default function ProblemDetailClient({
   const [expandedSubmissionId, setExpandedSubmissionId] = useState<number | null>(
     null,
   );
+  const [analysisReport, setAnalysisReport] = useState<CodeAnalysisReport | null>(
+    null,
+  );
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const loadSubmissions = useCallback(async () => {
     setIsSubmissionLoading(true);
@@ -116,6 +123,26 @@ export default function ProblemDetailClient({
     await loadSubmissions();
   }, [loadSubmissions]);
 
+  const handleAnalysisStart = useCallback(() => {
+    setActiveTab("analysis");
+    setIsAnalyzing(true);
+    setAnalysisError(null);
+    setAnalysisReport(null);
+  }, []);
+
+  const handleAnalysisComplete = useCallback((report: CodeAnalysisReport) => {
+    setIsAnalyzing(false);
+    setAnalysisError(null);
+    setAnalysisReport(report);
+    setActiveTab("analysis");
+  }, []);
+
+  const handleAnalysisError = useCallback((message: string) => {
+    setIsAnalyzing(false);
+    setAnalysisError(message);
+    setActiveTab("analysis");
+  }, []);
+
   return (
     <div className="h-screen bg-muted p-4">
       <ResizablePanelGroup
@@ -135,6 +162,7 @@ export default function ProblemDetailClient({
               <TabsList>
                 <TabsTrigger value="detail">题目详情</TabsTrigger>
                 <TabsTrigger value="solution">查看题解</TabsTrigger>
+                <TabsTrigger value="analysis">代码分析</TabsTrigger>
                 <TabsTrigger value="submission">提交记录</TabsTrigger>
               </TabsList>
             </div>
@@ -155,6 +183,16 @@ export default function ProblemDetailClient({
                   题解内容暂未提供
                 </div>
               )}
+            </TabsContent>
+            <TabsContent
+              value="analysis"
+              className="h-[calc(100%-64px)] p-4 overflow-auto"
+            >
+              <CodeAnalysisPanel
+                report={analysisReport}
+                isAnalyzing={isAnalyzing}
+                error={analysisError}
+              />
             </TabsContent>
             <TabsContent
               value="submission"
@@ -393,6 +431,9 @@ export default function ProblemDetailClient({
             problemId={problemId}
             onSubmissionStart={handleSubmissionStart}
             onSubmissionSettled={handleSubmissionSettled}
+            onAnalysisStart={handleAnalysisStart}
+            onAnalysisComplete={handleAnalysisComplete}
+            onAnalysisError={handleAnalysisError}
           />
         </ResizablePanel>
       </ResizablePanelGroup>

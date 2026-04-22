@@ -33,11 +33,13 @@ export interface CodeEditorState {
   code: string;
   editorMounted: boolean;
   isSubmitting: boolean;
+  isAnalyzing: boolean;
 }
 
 export interface CodeEditorHandlers {
   handleEditorChange: (value: string | undefined) => void;
   handleLanguageChange: (language: Language) => void;
   handleSubmit: () => Promise<void>;
+  handleAnalyze: () => Promise<void>;
   handleEditorMount: (editor: any, monaco: any) => void;
 }

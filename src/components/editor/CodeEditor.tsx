@@ -5,30 +5,44 @@ import { CodeEditorFooter } from "@/components/editor/CodeEditorFooter";
 import { MonacoEditor } from "@/components/editor/MonacoEditor";
 import { useCodeEditor } from "@/hooks/useCodeEditor";
 import { LANGUAGE_OPTIONS } from "@/constants/codeEditor";
+import { CodeAnalysisReport } from "@/types/problemAnalysis";
 
 interface CodeEditorProps {
   problemId: number;
   onSubmissionStart?: () => void;
   onSubmissionSettled?: () => void | Promise<void>;
+  onAnalysisStart?: () => void;
+  onAnalysisComplete?: (
+    report: CodeAnalysisReport,
+  ) => void | Promise<void>;
+  onAnalysisError?: (message: string) => void | Promise<void>;
 }
 
 export default function CodeEditor({
   problemId,
   onSubmissionStart,
   onSubmissionSettled,
+  onAnalysisStart,
+  onAnalysisComplete,
+  onAnalysisError,
 }: CodeEditorProps) {
   const {
     selectedLanguage,
     code,
     isSubmitting,
+    isAnalyzing,
     handleEditorChange,
     handleLanguageChange,
     handleSubmit,
+    handleAnalyze,
     handleEditorMount,
   } = useCodeEditor({
     problemId,
     onSubmissionStart,
     onSubmissionSettled,
+    onAnalysisStart,
+    onAnalysisComplete,
+    onAnalysisError,
   });
 
   return (
@@ -44,7 +58,12 @@ export default function CodeEditor({
         onChange={handleEditorChange}
         onMount={handleEditorMount}
       />
-      <CodeEditorFooter onSubmit={handleSubmit} isSubmitting={isSubmitting} />
+      <CodeEditorFooter
+        onAnalyze={handleAnalyze}
+        onSubmit={handleSubmit}
+        isAnalyzing={isAnalyzing}
+        isSubmitting={isSubmitting}
+      />
     </div>
   );
 }

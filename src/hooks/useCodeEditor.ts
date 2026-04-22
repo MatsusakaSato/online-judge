@@ -6,6 +6,7 @@ import {
 } from "@/types/codeEditor";
 import { ResponseResult } from "@/common/ApiResponse";
 import { SubmissionRecord } from "@/types/judge";
+import { CodeAnalysisReport } from "@/types/problemAnalysis";
 import {
   CODE_TEMPLATES,
   DEFAULT_LANGUAGE,
@@ -17,18 +18,27 @@ interface UseCodeEditorOptions {
   problemId: number;
   onSubmissionStart?: () => void;
   onSubmissionSettled?: () => void | Promise<void>;
+  onAnalysisStart?: () => void;
+  onAnalysisComplete?: (
+    report: CodeAnalysisReport,
+  ) => void | Promise<void>;
+  onAnalysisError?: (message: string) => void | Promise<void>;
 }
 
 export function useCodeEditor({
   problemId,
   onSubmissionStart,
   onSubmissionSettled,
+  onAnalysisStart,
+  onAnalysisComplete,
+  onAnalysisError,
 }: UseCodeEditorOptions): CodeEditorState & CodeEditorHandlers {
   const [selectedLanguage, setSelectedLanguage] =
     useState<Language>(DEFAULT_LANGUAGE);
   const [code, setCode] = useState<string>(CODE_TEMPLATES[DEFAULT_LANGUAGE]);
   const [editorMounted, setEditorMounted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
 
   const handleEditorChange = useCallback((value: string | undefined) => {
     setCode(value ?? "");
@@ -81,6 +91,57 @@ export function useCodeEditor({
     }
   }, [code, onSubmissionSettled, onSubmissionStart, problemId, selectedLanguage]);
 
+  const handleAnalyze = useCallback(async () => {
+    const trimmedCode = code.trim();
+
+    if (!trimmedCode) {
+      toast.error("请先输入代码后再分析");
+      return;
+    }
+
+    setIsAnalyzing(true);
+    onAnalysisStart?.();
+
+    try {
+      const response = await fetch(`/api/problems/${problemId}/analysis`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          code: trimmedCode,
+          language: selectedLanguage,
+        }),
+      });
+
+      const result: ResponseResult<CodeAnalysisReport> = await response.json();
+
+      if (!response.ok || result.code !== 0 || !result.data) {
+        const message = result.msg || "代码分析失败，请稍后重试";
+        await onAnalysisError?.(message);
+        toast.error(message);
+        return;
+      }
+
+      await onAnalysisComplete?.(result.data);
+      toast.success("AI 分析完成");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "代码分析失败，请稍后重试";
+      await onAnalysisError?.(message);
+      toast.error(message);
+    } finally {
+      setIsAnalyzing(false);
+    }
+  }, [
+    code,
+    onAnalysisComplete,
+    onAnalysisError,
+    onAnalysisStart,
+    problemId,
+    selectedLanguage,
+  ]);
+
   const handleEditorMount = useCallback((editor: any, monaco: any) => {
     monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions(
       MONACO_DIAGNOSTICS_OPTIONS,
@@ -102,9 +163,11 @@ export function useCodeEditor({
     code,
     editorMounted,
     isSubmitting,
+    isAnalyzing,
     handleEditorChange,
     handleLanguageChange,
     handleSubmit,
+    handleAnalyze,
     handleEditorMount,
   };
 }
