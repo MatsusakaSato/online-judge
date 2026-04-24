@@ -21,6 +21,22 @@ const getJudge0ApiUrl = (): string => {
   return "https://ce.judge0.com";
 };
 
+const encodeBase64 = (value?: string | null) => {
+  if (value === undefined || value === null) {
+    return undefined;
+  }
+
+  return Buffer.from(value, "utf8").toString("base64");
+};
+
+const decodeBase64 = (value?: string | null) => {
+  if (!value) {
+    return value ?? null;
+  }
+
+  return Buffer.from(value, "base64").toString("utf8");
+};
+
 export default class ThirdPartySandbox implements CodeSandbox {
   private apiUrl: string;
 
@@ -53,9 +69,9 @@ export default class ThirdPartySandbox implements CodeSandbox {
     try {
       const requestBody: Judge0SubmissionRequest = {
         language_id: languageId,
-        source_code: req.source_code,
-        stdin: req.stdin,
-        expected_output: req.expectedOutput,
+        source_code: encodeBase64(req.source_code) || "",
+        stdin: encodeBase64(req.stdin),
+        expected_output: encodeBase64(req.expectedOutput),
       };
 
       if (typeof req.timeLimit === "number" && Number.isFinite(req.timeLimit)) {
@@ -68,7 +84,7 @@ export default class ThirdPartySandbox implements CodeSandbox {
 
       // 2. 调用 Judge0 API（同步模式，wait=true）
       const response = await fetch(
-        `${this.apiUrl}/submissions?wait=true`,
+        `${this.apiUrl}/submissions?base64_encoded=true&wait=true`,
         {
           method: "POST",
           headers: {
@@ -118,11 +134,11 @@ export default class ThirdPartySandbox implements CodeSandbox {
     const timeMs = result.time ? Math.round(parseFloat(result.time) * 1000) : null;
 
     return {
-      stdout: result.stdout,
+      stdout: decodeBase64(result.stdout),
       time: timeMs,
       memory: result.memory,
-      compileOutput: result.compile_output,
-      stderr: result.stderr,
+      compileOutput: decodeBase64(result.compile_output),
+      stderr: decodeBase64(result.stderr),
       status: statusInfo.status,
       desc: statusInfo.judgeResult,
     };

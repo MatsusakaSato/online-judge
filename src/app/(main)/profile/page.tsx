@@ -13,7 +13,7 @@ export default function ProfilePage() {
     }
   }, []);
   return (
-    <main className="flex-1 flex justify-center items-center">
+    <main className="flex h-full items-center justify-center overflow-hidden py-2">
       <Profile user={user} />
     </main>
   );
