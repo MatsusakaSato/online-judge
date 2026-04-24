@@ -1,9 +1,10 @@
 // components/layout/Header.tsx
 "use client";
 
-import { Search, Code2 } from "lucide-react";
+import { Bot, Search, Code2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Avatar } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   HoverCard,
   HoverCardTrigger,
@@ -33,6 +34,13 @@ export default function Header() {
 
       {/* 右侧：通知 + 用户头像 */}
       <div className="flex items-center gap-4 px-6">
+        {user?.isLoggedIn && (
+          <Link href="/ai-chat" aria-label="打开 AI 对话">
+            <Button size="icon" variant="outline" title="AI 对话">
+              <Bot className="h-4 w-4" />
+            </Button>
+          </Link>
+        )}
         <Avatar className="h-8 w-8">
           <img src="https://picsum.photos/200/200" alt="User avatar" />
         </Avatar>

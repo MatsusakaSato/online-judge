@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
   Users,
   LogOut,
@@ -8,10 +7,12 @@ import {
   User,
   Home,
   PlusCircle,
+  Bot,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { Role } from "@/constants/enum";
 
@@ -42,6 +43,12 @@ const routes: Route[] = [
     requiresRole: [Role.USER, Role.ADMIN],
   },
   {
+    label: "AI 对话",
+    href: "/ai-chat",
+    icon: Bot,
+    requiresRole: [Role.USER, Role.ADMIN],
+  },
+  {
     label: "创建题目",
     href: "/create-problem",
     icon: PlusCircle,
@@ -51,6 +58,7 @@ const routes: Route[] = [
 
 export default function Sidebar() {
   const { data: session } = useSession();
+  const pathname = usePathname();
   const logout = () => {
     signOut({ callbackUrl: "/" });
   };
@@ -66,8 +74,6 @@ export default function Sidebar() {
       path: route.href,
     }));
 
-  const [activeItem, setActiveItem] = useState("首页");
-
   return (
     <div className="h-full flex flex-col">
       <nav className="flex-1 px-4 py-4 overflow-y-auto">
@@ -76,9 +82,13 @@ export default function Sidebar() {
             <li key={item.title}>
               <Link href={item.path}>
                 <Button
-                  variant={activeItem === item.title ? "secondary" : "ghost"}
+                  variant={
+                    pathname === item.path ||
+                    (item.path !== "/" && pathname.startsWith(item.path))
+                      ? "secondary"
+                      : "ghost"
+                  }
                   className={cn("w-full justify-start gap-3")}
-                  onClick={() => setActiveItem(item.title)}
                 >
                   <item.icon className="h-5 w-5" />
                   <span>{item.title}</span>
