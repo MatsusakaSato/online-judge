@@ -40,22 +40,23 @@ export default function ProblemListClient({
   };
 
   return (
-    <div className="space-y-6">
-      <ProblemTable columns={columns} data={data} />
+    <div className="rounded-2xl border bg-card p-5 shadow-sm">
+      <div className="space-y-5 overflow-x-auto">
+        <ProblemTable columns={columns} data={data} />
 
-      {totalPages > 1 && (
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={() =>
-                  currentPage > 1 && handlePageChange(currentPage - 1)
-                }
-                className={
-                  currentPage === 1 ? "pointer-events-none opacity-50" : ""
-                }
-              />
-            </PaginationItem>
+        {totalPages > 1 && (
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() =>
+                    currentPage > 1 && handlePageChange(currentPage - 1)
+                  }
+                  className={
+                    currentPage === 1 ? "pointer-events-none opacity-50" : ""
+                  }
+                />
+              </PaginationItem>
 
             {Array.from({ length: totalPages }, (_, i) => i + 1).map(
               (page) => (
@@ -83,9 +84,10 @@ export default function ProblemListClient({
                 }
               />
             </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      )}
+            </PaginationContent>
+          </Pagination>
+        )}
+      </div>
     </div>
   );
 }

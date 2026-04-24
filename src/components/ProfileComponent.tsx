@@ -43,9 +43,14 @@ const ProfileComponent = ({ user }: ProfileProps) => {
   const [avatarPreview, setAvatarPreview] = React.useState<string | null>(null);
 
   return (
-    <div className="w-full max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-gray-200 dark:border-gray-700">
+    <div className="mx-auto w-full max-w-md overflow-hidden rounded-2xl border bg-card shadow-xl shadow-slate-200/70">
       <div className="p-6">
-        <h2 className="text-xl font-semibold text-center mb-6">个人资料</h2>
+        <div className="mb-6 text-center">
+          <h2 className="text-2xl font-semibold tracking-tight">个人资料</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            管理你的用户名、邮箱和头像信息
+          </p>
+        </div>
 
         <div className="flex flex-col items-center gap-6">
           {/* 头像上传 */}

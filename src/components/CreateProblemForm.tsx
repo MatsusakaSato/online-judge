@@ -69,7 +69,7 @@ interface JudgeCaseFieldProps {
 
 function JudgeCaseField({ index, onRemove }: JudgeCaseFieldProps) {
   return (
-    <div className="space-y-3 rounded-lg border p-4 bg-card">
+    <div className="space-y-3 rounded-xl border bg-card p-4 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <span className="text-sm font-medium">测试用例 {index + 1}</span>
         <Button
@@ -286,14 +286,22 @@ export default function CreateProblemForm({
   };
 
   return (
-    <div className="h-full flex flex-col min-h-0 min-w-[700px]">
+    <div className="flex h-full min-h-0 min-w-[700px] flex-col rounded-2xl border bg-card shadow-sm">
+      <div className="border-b px-6 py-5">
+        <h1 className="text-2xl font-semibold tracking-tight">
+          {initialValue ? "编辑题目" : "创建题目"}
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          维护题目描述、官方题解、测试用例和判题配置。
+        </p>
+      </div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleFormSubmit)}
           className="flex-1 flex flex-col min-h-0"
         >
           <div className="flex-1 overflow-y-auto min-h-0">
-            <div className="max-w-4xl mx-auto px-6 py-6 space-y-6">
+            <div className="mx-auto max-w-4xl space-y-6 px-6 py-6">
               <FormField
                 control={form.control}
                 name="title"
@@ -335,7 +343,7 @@ export default function CreateProblemForm({
                   <FormItem>
                     <FormLabel>题目描述</FormLabel>
                     <FormControl>
-                      <div className="border rounded-md overflow-hidden">
+                      <div className="overflow-hidden rounded-xl border bg-background shadow-sm">
                         <MdEditorComponent
                           value={field.value}
                           onChange={field.onChange}
@@ -354,7 +362,7 @@ export default function CreateProblemForm({
                   <FormItem>
                     <FormLabel>官方题解（可选）</FormLabel>
                     <FormControl>
-                      <div className="border rounded-md overflow-hidden">
+                      <div className="overflow-hidden rounded-xl border bg-background shadow-sm">
                         <MdEditorComponent
                           value={field.value || ""}
                           onChange={field.onChange}

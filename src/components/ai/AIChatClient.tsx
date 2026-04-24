@@ -137,7 +137,7 @@ export default function AIChatClient() {
   };
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-9rem)] max-w-5xl flex-col rounded-xl border bg-card shadow-sm">
+    <div className="mx-auto flex h-[calc(100vh-10rem)] max-w-5xl flex-col overflow-hidden rounded-2xl border bg-card shadow-lg shadow-slate-200/70">
       <div className="border-b px-6 py-4">
         <div className="flex items-center gap-3">
           <div className="rounded-lg bg-primary/10 p-2">
@@ -152,7 +152,7 @@ export default function AIChatClient() {
         </div>
       </div>
 
-      <div className="flex-1 space-y-4 overflow-y-auto px-6 py-5">
+      <div className="flex-1 space-y-4 overflow-y-auto bg-muted/20 px-6 py-5">
         {messages.map((message, index) => {
           const isUser = message.role === "user";
           return (
@@ -191,7 +191,7 @@ export default function AIChatClient() {
         <div ref={bottomRef} />
       </div>
 
-      <form onSubmit={handleSubmit} className="border-t p-4">
+      <form onSubmit={handleSubmit} className="border-t bg-card p-4">
         <div className="flex items-end gap-3">
           <textarea
             value={input}

@@ -42,7 +42,7 @@ export default function DataTable<TData, TValue>({
   };
 
   return (
-    <div className="space-y-4 min-w-[600px]">
+    <div className="min-w-[600px] space-y-4">
       {selectedRows && selectedRows.length > 0 && (
         <div className="flex items-center gap-4 bg-red-50 p-4 rounded-lg border border-red-200">
           <span className="text-sm text-red-700">
@@ -78,7 +78,7 @@ export default function DataTable<TData, TValue>({
         </div>
       )}
 
-      <div className="rounded-md border">
+      <div className="overflow-hidden rounded-xl border bg-background shadow-sm">
         <Table>
           <TableBody>
             {table.getRowModel().rows?.length ? (

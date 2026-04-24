@@ -102,7 +102,13 @@ export default function LoginRegisterForm() {
   };
 
   return (
-    <div className="w-full max-w-sm mx-auto mt-8 p-6 bg-card rounded-lg shadow-lg">
+    <div className="mx-auto w-full max-w-sm rounded-2xl border bg-card p-6 shadow-xl shadow-slate-200/70">
+      <div className="mb-6 text-center">
+        <h1 className="text-2xl font-semibold tracking-tight">欢迎回来</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          登录或注册后继续使用在线判题平台
+        </p>
+      </div>
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         {/* 登录/注册标签切换 */}
         <TabsList className="grid w-full grid-cols-2 mb-6">

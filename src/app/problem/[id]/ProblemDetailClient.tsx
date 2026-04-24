@@ -144,21 +144,21 @@ export default function ProblemDetailClient({
   }, []);
 
   return (
-    <div className="h-screen bg-muted p-4">
+    <div className="h-screen bg-[radial-gradient(circle_at_top_left,rgba(15,23,42,0.08),transparent_30%),linear-gradient(180deg,#f8fafc,#eef2f7)] p-5">
       <ResizablePanelGroup
         orientation="horizontal"
-        className="h-full border-collapse"
+        className="h-full gap-4"
       >
         <ResizablePanel
           defaultSize="50%"
-          className="rounded-xl bg-card shadow-lg overflow-hidden"
+          className="overflow-hidden rounded-2xl border bg-card shadow-xl shadow-slate-200/70"
         >
           <Tabs
             value={activeTab}
             onValueChange={(value) => setActiveTab(value as ProblemTab)}
             className="h-full"
           >
-            <div className="flex items-center justify-between px-4 py-1 border-b bg-white">
+            <div className="flex items-center justify-between border-b bg-card px-4 py-2">
               <TabsList>
                 <TabsTrigger value="detail">题目详情</TabsTrigger>
                 <TabsTrigger value="solution">查看题解</TabsTrigger>
@@ -425,7 +425,7 @@ export default function ProblemDetailClient({
         <ResizableHandle className="w-2 bg-transparent" />
         <ResizablePanel
           defaultSize="50%"
-          className="rounded-xl bg-card shadow-lg overflow-hidden"
+          className="overflow-hidden rounded-2xl border bg-card shadow-xl shadow-slate-200/70"
         >
           <CodeEditor
             problemId={problemId}
