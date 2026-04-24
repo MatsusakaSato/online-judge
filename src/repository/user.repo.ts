@@ -2,7 +2,6 @@ import { client } from "@/schema/db.client";
 import {
   userTable,
   UserInsertModel,
-  UserSelectModel,
 } from "@/schema/user.schema";
 import { eq, and, sql } from "drizzle-orm";
 
